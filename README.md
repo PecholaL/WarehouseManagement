@@ -3,7 +3,7 @@ learning project of SpringBoot + mybatis-plus
 
 ## 学习内容
 后端：SpringBoot + mybatis-plus + MySQL  
-前端：nodejs + VUE + element-ui
+前端：Node.js + VUE + Element-ui
 
 ## 功能
 1. 登录/退出
