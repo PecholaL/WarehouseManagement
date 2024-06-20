@@ -1,5 +1,5 @@
 # WarehouseManagement
-learning project of SpringBoot + mybatis-plus
+learning project of SpringBoot  
 
 ## 学习内容
 后端：SpringBoot + mybatis-plus + MySQL  
