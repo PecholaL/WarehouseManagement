@@ -15,5 +15,5 @@ learning project of SpringBoot + mybatis-plus
    5. 记录管理
 
 ## 版本
-JDK 1.8  
-Java 8
+JDK 18  
+MariaDB 10.4.27  
