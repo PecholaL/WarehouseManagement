@@ -14,6 +14,10 @@ learning project of SpringBoot + mybatis-plus
    4. 物品分类管理
    5. 记录管理
 
+## 学习过程
+1. 配置pom.xml，添加SpringBoot、MyBatis等依赖
+2. 创建数据库、设计表格
+
 ## 版本
 JDK 18  
 SpringBoot 2.6.7  
