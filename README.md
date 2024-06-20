@@ -16,4 +16,5 @@ learning project of SpringBoot + mybatis-plus
 
 ## 版本
 JDK 18  
+SpringBoot 2.6.7  
 MariaDB 10.4.27  
