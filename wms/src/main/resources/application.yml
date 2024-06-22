@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/WarehouseManagement
+    url: jdbc:mariadb://localhost:3306/WarehouseManagement?useUnicode=true&useSSL=false&characterEncoding=utf8
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: root1999
