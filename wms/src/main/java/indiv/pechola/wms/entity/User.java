@@ -1,5 +1,6 @@
 package indiv.pechola.wms.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,9 +20,13 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value="User对象", description="")
 public class User implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "user id")
+    private  String id;
+
+    @ApiModelProperty(value = "user number")
     private String no;
 
     @ApiModelProperty(value = "name")

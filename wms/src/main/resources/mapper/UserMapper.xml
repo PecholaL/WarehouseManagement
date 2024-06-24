@@ -20,4 +20,7 @@
         no, name, password, age, sex, phone, role_id
     </sql>
 
+    <select id="pageC" resultType="indiv.pechola.wms.entity.User">
+        select * from user ${ew.customSqlSegment}
+    </select>
 </mapper>
