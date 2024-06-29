@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import indiv.pechola.wms.common.QueryPageParam;
+import indiv.pechola.wms.common.Result;
 import indiv.pechola.wms.entity.User;
 import indiv.pechola.wms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +99,23 @@ public class UserController {
         IPage res = userService.pageC(page, lambdaQueryWrapper);
 
         return res.getRecords();
+    }
+
+    // 查 分页
+    @PostMapping("/listR")
+    public Result listR(@RequestBody QueryPageParam query) {
+        HashMap param = query.getParam();
+        String name = (String) param.get("pageName");
+
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(User::getName, name);
+
+        Page<User> page = new Page<>();
+        page.setCurrent(query.getPagNum());
+        page.setSize(query.getPageSize());
+
+        IPage res = userService.pageC(page, lambdaQueryWrapper);
+
+        return Result.success(res.getTotal(), res.getRecords());
     }
 }

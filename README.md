@@ -22,3 +22,4 @@ project for SpringBoot learning
 JDK 18  
 SpringBoot 2.6.7  
 MariaDB 10.4.27  
+VUE 2  
