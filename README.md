@@ -19,10 +19,14 @@ project for SpringBoot learning
 2. 创建数据库、设计表格
 3. MyBatis、自动生成代码
 4. 返回前端数据封装
-5. 前端编写
+5. VUE项目创建、倒入Element-UI
+6. 页面布局设计，Container布局容器
 
 ## 版本
 JDK 18  
 SpringBoot 2.6.7  
 MariaDB 10.4.27  
 VUE 2  
+
+## Thanks
+Fonts: [Intel-One-Mono](https://github.com/intel/intel-one-mono)  
