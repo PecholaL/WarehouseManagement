@@ -1,19 +1,11 @@
 # WarehouseManagement
 project for SpringBoot learning  
 
-## 学习内容
-后端：SpringBoot + mybatis-plus + MySQL  
-前端：Node.js + VUE + Element-UI
+## Learning
+BACK-END：SpringBoot + mybatis-plus + MySQL  
+FRONT-END：Node.js + VUE + Element-UI
 
-## 功能
-1. 登录/退出
-2. 管理
-   1. 管理员管理
-   2. 用户管理
-   3. 仓库管理
-   4. 物品分类管理
-   5. 记录管理
-
+<!--
 ## 学习过程
 1. 配置并添加依赖
 2. 创建数据库、设计表格
@@ -21,12 +13,16 @@ project for SpringBoot learning
 4. 返回前端数据封装
 5. VUE项目创建、倒入Element-UI
 6. 页面布局设计，Container布局容器
+7. 
+8. -->
 
-## 版本
+## Requirements
 JDK 18  
 SpringBoot 2.6.7  
 MariaDB 10.4.27  
 VUE 2  
 
 ## Thanks
-Fonts: [Intel-One-Mono](https://github.com/intel/intel-one-mono)  
+Fonts:  
+[Intel-One-Mono](https://github.com/intel/intel-one-mono)  
+[霞鹜文楷](https://github.com/lxgw/LxgwWenKai)  

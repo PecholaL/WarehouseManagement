@@ -2,3 +2,9 @@
     font-family:"intelone";
     src:url("./fonts/intelone.otf")
 }
+
+@font-face{
+    font-family:"WenKai";
+    src:url("./fonts/LXGWWenKai.ttf")
+}
+
