@@ -6,7 +6,7 @@
 
 <script>
 
-import WmsIndex from "./components/WmsIndex"
+import WmsIndex from "./components/WmsIndex.vue"
 import "./assets/fonts.css"
 
 export default {
