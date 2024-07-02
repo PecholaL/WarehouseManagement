@@ -23,5 +23,5 @@ DB: MariaDB 10.4.27
 
 ## Thanks
 Fonts:  
-[Intel-One-Mono](https://github.com/intel/intel-one-mono)  
 [霞鹜文楷](https://github.com/lxgw/LxgwWenKai)  
+[Intel-One-Mono](https://github.com/intel/intel-one-mono)  
