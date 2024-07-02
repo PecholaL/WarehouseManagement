@@ -2,7 +2,7 @@
 project for SpringBoot learning  
 
 ## Learning
-BACK-END：SpringBoot + mybatis-plus + MySQL  
+BACK-END：SpringBoot + MyBatis-Plus + MySQL  
 FRONT-END：Node.js + VUE + Element-UI
 
 <!--
