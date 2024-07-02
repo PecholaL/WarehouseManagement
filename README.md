@@ -18,9 +18,8 @@ FRONT-END：Node.js + VUE + Element-UI
 
 ## Requirements
 JDK 18  
-SpringBoot 2.6.7  
-MariaDB 10.4.27  
 VUE 2  
+DB: MariaDB 10.4.27  
 
 ## Thanks
 Fonts:  
