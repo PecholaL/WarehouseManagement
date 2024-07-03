@@ -3,6 +3,7 @@ package indiv.pechola.wms.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import indiv.pechola.wms.common.QueryPageParam;
 import indiv.pechola.wms.common.Result;
@@ -62,7 +63,9 @@ public class UserController {
     @PostMapping("/listP")
     public List<User> listP(@RequestBody User user) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(User::getName, user.getName());
+        if(StringUtils.isNotBlank(user.getName())) {
+            lambdaQueryWrapper.like(User::getName, user.getName());
+        }
         return userService.list(lambdaQueryWrapper);
     }
 
