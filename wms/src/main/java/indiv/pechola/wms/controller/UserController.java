@@ -70,55 +70,21 @@ public class UserController {
     }
 
     @PostMapping("/listPage")
-    public List<User> listP(@RequestBody QueryPageParam query) {
+    public Result listPage(@RequestBody QueryPageParam query) {
         HashMap param = query.getParam();
-        String name = (String) param.get("pageName");
+        String name = (String) param.get("name");
 
         Page<User> page = new Page<>();
-        page.setCurrent(query.getPagNum());
+        page.setCurrent(query.getPageNum());
         page.setSize(query.getPageSize());
 
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(User::getName, name);
-
+        if(StringUtils.isNotBlank(name) && !name.equals("null")) {
+            lambdaQueryWrapper.like(User::getName, name);
+        }
         IPage res = userService.page(page, lambdaQueryWrapper);
-
-        return res.getRecords();
-    }
-
-    // 查 分页
-    @PostMapping("/listC")
-    public List<User> listC(@RequestBody QueryPageParam query) {
-        HashMap param = query.getParam();
-        String name = (String) param.get("pageName");
-
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(User::getName, name);
-
-        Page<User> page = new Page<>();
-        page.setCurrent(query.getPagNum());
-        page.setSize(query.getPageSize());
-
-        IPage res = userService.pageC(page, lambdaQueryWrapper);
-
-        return res.getRecords();
-    }
-
-    // 查 分页
-    @PostMapping("/listR")
-    public Result listR(@RequestBody QueryPageParam query) {
-        HashMap param = query.getParam();
-        String name = (String) param.get("pageName");
-
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(User::getName, name);
-
-        Page<User> page = new Page<>();
-        page.setCurrent(query.getPagNum());
-        page.setSize(query.getPageSize());
-
-        IPage res = userService.pageC(page, lambdaQueryWrapper);
 
         return Result.success(res.getTotal(), res.getRecords());
     }
+    
 }
