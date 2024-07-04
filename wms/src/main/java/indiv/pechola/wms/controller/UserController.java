@@ -37,8 +37,8 @@ public class UserController {
 
     // 增
     @PostMapping("/save")
-    public boolean save(@RequestBody User user) {
-        return userService.save(user);
+    public Result save(@RequestBody User user) {
+        return userService.save(user)? Result.success() : Result.fail();
     }
 
     // 删
@@ -73,6 +73,7 @@ public class UserController {
     public Result listPage(@RequestBody QueryPageParam query) {
         HashMap param = query.getParam();
         String name = (String) param.get("name");
+        String sex = (String) param.get("sex");
 
         Page<User> page = new Page<>();
         page.setCurrent(query.getPageNum());
@@ -82,9 +83,12 @@ public class UserController {
         if(StringUtils.isNotBlank(name) && !name.equals("null")) {
             lambdaQueryWrapper.like(User::getName, name);
         }
+        if(StringUtils.isNotBlank(sex)) {
+            lambdaQueryWrapper.eq(User::getSex, sex);
+        }
         IPage res = userService.page(page, lambdaQueryWrapper);
 
         return Result.success(res.getTotal(), res.getRecords());
     }
-    
+
 }

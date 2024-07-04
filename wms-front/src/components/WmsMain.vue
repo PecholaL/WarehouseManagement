@@ -1,5 +1,24 @@
 <template>
     <div>
+        <div style="margin-bottom: 1%;" align="left">
+            <el-input v-model="name" 
+                size="small" placeholder="请输入姓名" 
+                suffix-icon="el-icon-search" style="width: 15%;" 
+                @keyup.enter.native="loadPost">
+            </el-input>
+            <el-select v-model="sex" filterable placeholder="请选择性别" 
+                size="small" style="margin-left: 5px; width: 10%">
+                <el-option
+                    v-for="item in sexes" 
+                    :key="item.value" 
+                    :label="item.label" 
+                    :value="item.value">
+                </el-option>
+            </el-select>
+            <el-button size="mini" type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
+            <el-button size="mini" type="success" style="margin-left: 5px" @click="resetParam">重置</el-button>
+            <el-button size="mini" type="primary" style="margin-left: 5px;" @click="add">新增</el-button>
+        </div>
         <el-table :data="tableData"
             :header-cell-style="{background:'#ffcc99', color:'#555'}"
 
@@ -33,6 +52,7 @@
                 <el-button size="small" type="danger">删除</el-button>
             </el-table-column>
         </el-table>
+        
         <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -42,6 +62,50 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="total">
         </el-pagination>
+
+        <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+            center>
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="账号">
+                    <el-col :span="18">
+                        <el-input v-model="form.no"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-col :span="18">
+                        <el-input v-model="form.password"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="姓名">
+                    <el-col :span="18">
+                        <el-input v-model="form.name"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="性别">
+                    <el-radio-group v-model="form.sex">
+                        <el-radio label="1">男</el-radio>
+                        <el-radio label="0">女</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="年龄">
+                    <el-col :span="18">
+                        <el-input v-model="form.age"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="电话">
+                    <el-col :span="18">
+                        <el-input v-model="form.phone"></el-input>
+                    </el-col>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+                <el-button size="mini" type="primary" @click="save">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -53,7 +117,29 @@ export default {
             tableData: [],
             pageSize: 5,
             pageNum: 1,
-            total: 0
+            total: 0,
+            name: '',
+            sex: '',
+            sexes: [
+                {
+                    value: '1',
+                    label: '男'
+                },
+                {
+                    value: '0',
+                    label: '女'
+                }
+            ],
+            dialogVisible: false,
+            form: {
+                no: '',
+                password: '',
+                name: '',
+                sex: '0',
+                age: '',
+                phone: '',
+                roleId: '2'
+            }
         }
     },
     methods: {
@@ -64,8 +150,12 @@ export default {
         },
         loadPost() {
             this.$axios.post(this.$httpUrl + '/user/listPage', {
-                pageSize:this.pageSize,
-                pageNum:this.pageNum
+                pageSize: this.pageSize,
+                pageNum: this.pageNum,
+                param:{
+                    name: this.name,
+                    sex: this.sex
+                }
             }).then(res=>res.data).then(res=>{
                 console.log(res.code);
                 if(res.code==200) {
@@ -86,6 +176,31 @@ export default {
             console.log(`当前页: ${val}`);
             this.pageNum = val;
             this.loadPost();
+        },
+        resetParam() {
+            this.name='';
+            this.sex='';
+        },
+        add() {
+            this.dialogVisible = true;
+        },
+        save() {
+            this.$axios.post(this.$httpUrl + '/user/save', this.form).then(res=>res.data).then(res=>{
+                console.log(res.code);
+                if(res.code==200) {
+                    this.$message({
+                        message: '添加成功',
+                        type: 'success'
+                    });
+                    this.dialogVisible = false;
+                    this.loadPost();
+                } else {
+                    this.$message({
+                        message: '添加失败',
+                        type: 'success'
+                    });
+                }
+            })
         }
     },
     beforeMount() {
