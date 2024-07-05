@@ -91,4 +91,10 @@ public class UserController {
         return Result.success(res.getTotal(), res.getRecords());
     }
 
+    @GetMapping("/findByNo")
+    public Result findByNo(@RequestParam String no) {
+        List<User> list = userService.lambdaQuery().eq(User::getNo, no).list();
+        return list.size()>0 ? Result.success(list) : Result.fail();
+    }
+
 }
