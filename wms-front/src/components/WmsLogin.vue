@@ -3,18 +3,20 @@
         <div class="loginDiv">
             <div class="login-content">
                 <h1 class="login-title">用户登录</h1>
-                <el-form :model="loginForm" label-width="100px"
+                <el-form :rules="rules" :model="loginForm" label-width="100px"
                     :rule="rules" ref="loginForm">
-                    <el-form-item label="账号" prop="no">
-                        <el-input style="" type="text" v-model="loginForm.no"
-                            autocomplete="off" size="small"></el-input>
+                    <el-form-item style="width: 100%;" label="账号" prop="no">
+                        <el-input type="text" v-model="loginForm.no"
+                            autocomplete="off" size="small">
+                        </el-input>
                     </el-form-item>
-                    <el-form-item label="密码" prop="password">
-                        <el-input style="" type="password" v-model="loginForm.password"
-                            show-password autocomplete="off" size="small" @keyup.enter.native="confirm"></el-input>
+                    <el-form-item style="width: 100%;" label="密码" prop="password">
+                        <el-input type="password" v-model="loginForm.password"
+                            show-password autocomplete="off" size="small" @keyup.enter.native="confirm">
+                        </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="confirm" :disabled="confirm_disabled">登入</el-button>
+                        <el-button style="margin-left: -15%;" type="primary" @click="confirm" :disabled="confirm_disabled">登 入</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -34,18 +36,12 @@ export default {
             },
             rules: {
                 no: [
-                    {
-                        required: true,
-                        message: '请输入账号',
-                        trigger: 'blur'
-                    }
+                    {required: true, message: '请输入账号', trigger: 'blur'},
+                    {min: 4, max: 10, message: '请输入规范账号', trigger: 'blur'},
                 ],
                 password: [
-                    {
-                        required: true,
-                        message: '请输入密码',
-                        trigger: 'blur'
-                    }
+                    {required: true, message: '请输入密码', trigger: 'blur'},
+                    {min: 3, max: 10, message: '请输入规范密码', trigger: 'blur'}
                 ]
             }
         }
@@ -82,7 +78,8 @@ export default {
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: #f7f7aa;
+        background-color: #fde985ce;
+        align-content: center;
     }
     .loginDiv {
         position: absolute;
@@ -96,14 +93,14 @@ export default {
         border-radius: 5%;
     }
     .login-title {
-        margin: 20px 0;
         text-align: center;
+        margin-left: 15%;
     }
     .login-content {
         width: 400px;
         height: 250px;
         position: absolute;
         top: 25px;
-        left: 25px;
+        /* left: 25px; */
     }
 </style>

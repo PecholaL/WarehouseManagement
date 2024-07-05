@@ -9,7 +9,7 @@
             <span>1918# Warehouse M.S.</span>
         </div>
        
-        <span style="font-size: 150%;">Pechola</span>
+        <span style="font-size: 150%;">{{user.name}}</span>
         
         <el-dropdown><i class="el-icon-arrow-down" style="margin-left: 80%; font-size: 100%;"></i>
             <el-dropdown-menu slot="dropdown">
@@ -25,6 +25,11 @@
 <script>
 export default {
     name: "WmsHeader",
+    data() {
+        return {
+            user: JSON.parse(sessionStorage.getItem('CurUser'))
+        }
+    },
     props: {
         foldIcon: String
     },
@@ -32,9 +37,28 @@ export default {
         userCenter() {
             console.log('to_user');
         },
+
         userExit() {
-            console.log('log_out');
+            this.$confirm('确定退出？', '⚠️', {
+                confirmButtonText: '确定',
+                type: 'warning',
+                center: true
+            }).then(()=>{
+                this.$message({
+                    type: 'success',
+                    message: '退出登录成功'
+                })
+                console.log('log_out');
+                this.$router.push("/");
+                sessionStorage.clear();
+            }).catch(()=>{
+                this.$message({
+                type: 'info',
+                message: '取消退出登录'
+                })
+            })
         },
+
         collapse() {
             this.$emit('doCollapse');
         }
