@@ -50,7 +50,9 @@
             <el-table-column prop="operate" label="操作" width="150">
                 <template slot-scope="scope">
                     <el-button size="small" type="success" @click="modify(scope.row)">编辑</el-button>
-                    <el-button size="small" type="danger" @click="del">删除</el-button>
+                    <el-popconfirm title="确定删除吗？" @confirm="del(scope.row.id)">
+                        <el-button size="small" slot="reference" type="danger" style="margin-left: 5px;">删除</el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
@@ -253,7 +255,7 @@ export default {
                 } else {
                     this.$message({
                         message: '更新失败',
-                        type: 'success'
+                        type: 'fail'
                     });
                 }
             });
@@ -290,9 +292,25 @@ export default {
                 this.form.roleId = row.roleId;
             })
         },
-        
-        del() {
 
+        del(id) {
+            this.$axios.get(this.$httpUrl + '/user/delete?id=' + id).then(res=>res.data).then(res=>{
+                console.log(res.code);
+                if(res.code==200) {
+                    this.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                    this.dialogVisible = false;
+                    this.loadPost();
+                } else {
+                    this.$message({
+                        message: '删除失败',
+                        type: 'fail'
+                    });
+                }
+            });
+            console.log('success submit!');
         }
     },
 

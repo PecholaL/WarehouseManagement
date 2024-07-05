@@ -1,19 +1,16 @@
 <template>
   <div id="app">
-    <WmsIndex></WmsIndex>
+    <router-view/>
   </div>
 </template>
 
 <script>
 
-import WmsIndex from "./components/WmsIndex.vue"
 import "./assets/fonts.css"
 
 export default {
   name: 'App',
-  components: {
-    WmsIndex
-  }
+  components: {}
 }
 </script>
 

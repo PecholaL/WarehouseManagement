@@ -23,58 +23,58 @@
 </template>
 
 <script>
-    export default {
-        name: "WmsLogin",
-        data() {
-            return {
-                confirm_disabled: false,
-                loginForm: {
-                    no: '',
-                    password: ''
-                },
-                rules: {
-                    no: [
-                        {
-                            required: true,
-                            message: '请输入账号',
-                            trigger: 'blur'
-                        }
-                    ],
-                    password: [
-                        {
-                            required: true,
-                            message: '请输入密码',
-                            trigger: 'blur'
-                        }
-                    ]
-                }
-            }
-        },
-        methods: {
-            confirm() {
-                this.confirm_disabled = true;
-                this.$refs.loginForm.validate((valid)=>{
-                    if(valid) {
-                        this.$axios.post(this.$httpUrl+'/user/login', this.loginForm).then(res=>res.data).then(res=>{
-                            console.log(res);
-                            if(res.code==200) {
-                                sessionStorage.setItem("CurUser", JSON.stringify(res.data));
-                                this.$router.replace('/WmsIndex');
-                            } else {
-                                this.confirm_disabled = false;
-                                alert('验证失败，用户或密码错误！');
-                                return false;
-                            }
-                        });
-                    } else {
-                        this.confirm_disabled = true;
-                        console.log('验证失败');
-                        return false;
+export default {
+    name: "WmsLogin",
+    data() {
+        return {
+            confirm_disabled: false,
+            loginForm: {
+                no: '',
+                password: ''
+            },
+            rules: {
+                no: [
+                    {
+                        required: true,
+                        message: '请输入账号',
+                        trigger: 'blur'
                     }
-                });
+                ],
+                password: [
+                    {
+                        required: true,
+                        message: '请输入密码',
+                        trigger: 'blur'
+                    }
+                ]
             }
         }
+    },
+    methods: {
+        confirm() {
+            this.confirm_disabled = true;
+            this.$refs.loginForm.validate((valid)=>{
+                if(valid) {
+                    this.$axios.post(this.$httpUrl+'/user/login', this.loginForm).then(res=>res.data).then(res=>{
+                        console.log(res);
+                        if(res.code==200) {
+                            sessionStorage.setItem("CurUser", JSON.stringify(res.data));
+                            this.$router.replace('/WmsIndex');
+                        } else {
+                            this.confirm_disabled = false;
+                            alert('验证失败，用户或密码错误！');
+                            return false;
+                        }
+                    });
+                } else {
+                    this.confirm_disabled = true;
+                    console.log('验证失败');
+                    return false;
+                }
+            });
+        }
     }
+}
 </script>
 
 <style scoped>

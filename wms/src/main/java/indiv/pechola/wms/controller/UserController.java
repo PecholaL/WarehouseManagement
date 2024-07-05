@@ -43,8 +43,8 @@ public class UserController {
 
     // 删
     @GetMapping("/delete")
-    public boolean delete(Integer id) {
-        return userService.removeById(id);
+    public Result delete(@RequestParam String id) {
+        return userService.removeById(id)? Result.success() : Result.fail();
     }
 
     // 改
@@ -97,4 +97,13 @@ public class UserController {
         return list.size()>0 ? Result.success(list) : Result.fail();
     }
 
+    // 登录
+    @PostMapping("/login")
+    public Result login(@RequestBody User user) {
+        List<User> list = userService.lambdaQuery()
+                .eq(User::getNo, user.getNo())
+                .eq(User::getPassword, user.getPassword())
+                .list();
+        return list.size()>0? Result.success(list.get(0)) : Result.fail();
+    }
 }
