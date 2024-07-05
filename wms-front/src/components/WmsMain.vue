@@ -48,8 +48,10 @@
                 </template>
             </el-table-column>
             <el-table-column prop="operate" label="操作" width="150">
-                <el-button size="small" type="success">编辑</el-button>
-                <el-button size="small" type="danger">删除</el-button>
+                <template slot-scope="scope">
+                    <el-button size="small" type="success" @click="modify(scope.row)">编辑</el-button>
+                    <el-button size="small" type="danger" @click="del">删除</el-button>
+                </template>
             </el-table-column>
         </el-table>
         
@@ -147,6 +149,7 @@ export default {
                 }
             ],
             dialogVisible: false,
+            saveOrModify: '',
             form: {
                 no: '',
                 password: '',
@@ -188,6 +191,7 @@ export default {
                 console.log(res);
             })
         },
+
         loadPost() {
             this.$axios.post(this.$httpUrl + '/user/listPage', {
                 pageSize: this.pageSize,
@@ -206,57 +210,92 @@ export default {
                 }
             })
         },
+
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
             this.pageNum = 1;
             this.pageSize = val;
             this.loadPost();
         },
+
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
             this.pageNum = val;
             this.loadPost();
         },
+
         resetParam() {
             this.name='';
             this.sex='';
         },
+
         resetForm() {
             this.$refs.form.resetFields();
         },
+
         add() {
             this.dialogVisible = true;
             this.$nextTick(()=>{
                 this.resetForm();
             })
         },
-        save() {
-            this.$refs.form.validate((valid) => {
-                if(valid) {
-                    this.$axios.post(this.$httpUrl + '/user/save', this.form).then(res=>res.data).then(res=>{
-                        console.log(res.code);
-                        if(res.code==200) {
-                            this.$message({
-                                message: '添加成功',
-                                type: 'success'
-                            });
-                            this.dialogVisible = false;
-                            this.loadPost();
-                        } else {
-                            this.$message({
-                                message: '添加失败',
-                                type: 'success'
-                            });
-                        }
+
+        doSave() {
+            this.$axios.post(this.$httpUrl + '/user/' + this.saveOrModify, this.form).then(res=>res.data).then(res=>{
+                console.log(res.code);
+                if(res.code==200) {
+                    this.$message({
+                        message: '更新成功',
+                        type: 'success'
                     });
-                    console.log('success submit!');
+                    this.dialogVisible = false;
+                    this.loadPost();
                 } else {
-                    console.log('error submit!');
-                    return false;
+                    this.$message({
+                        message: '更新失败',
+                        type: 'success'
+                    });
                 }
             });
+            console.log('success submit!');
+        },
+
+        save() {
+            this.$refs.form.validate((valid) => {
+                if(this.form.id) {
+                    this.saveOrModify = 'modify';
+                    this.doSave();
+                } else {
+                    if(valid) {
+                        this.saveOrModify = 'save';
+                        this.doSave();
+                    } else {
+                        console.log('error submit!');
+                        return false;
+                    }
+                }
+            });
+        },
+
+        modify(row) {
+            this.dialogVisible = true;
+            this.$nextTick(()=>{
+                this.form.id = row.id;
+                this.form.no = row.no+'';
+                this.form.name = row.name+'';
+                this.form.password = '';
+                this.form.sex = row.sex+'';
+                this.form.age = row.age+'';
+                this.form.phone = row.phone+'';
+                this.form.roleId = row.roleId;
+            })
+        },
+        
+        del() {
+
         }
     },
+
     beforeMount() {
         // this.loadGet();
         this.loadPost();

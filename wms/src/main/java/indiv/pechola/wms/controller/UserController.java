@@ -49,8 +49,8 @@ public class UserController {
 
     // 改
     @PostMapping("/modify")
-    public boolean mod(@RequestBody User user) {
-        return userService.updateById(user);
+    public Result mod(@RequestBody User user) {
+        return userService.updateById(user)? Result.success() : Result.fail();
     }
 
     // 新增或修改
