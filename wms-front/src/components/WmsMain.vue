@@ -113,17 +113,16 @@
 export default {
     name: "WmsMain",
     data() {
-        let checkAge = (value, callback) => {
+        let checkAge = (value, rule, callback) => {
             if(value>150){
                 callback(new Error('年龄过大'));
             } else {
                 callback();
             }
         };
-        let checkDuplicate =(callback) => {
-            this.$axios.get(this.$httpUrl + '/user/findByNo?'+this.form.no).then(res=>{
-                if(res.code==200) {
-                    console.log(1223);
+        let checkDuplicate =(value, rule, callback) => {
+            this.$axios.get(this.$httpUrl + '/user/findByNo?no='+this.form.no).then(res=>{
+                if(res.data.code==200) {
                     callback(new Error('账号已存在'));
                 } else {
                     callback();
