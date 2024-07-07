@@ -15,7 +15,7 @@
 export default {
     name: "DateUtils",
     props: ["s"],
-    date() {
+    data() {
         return {
             time: {
                 hour: "",
@@ -32,7 +32,7 @@ export default {
                 "金",
                 "土",
             ]
-        }
+        };
     },
     mounted() {
         this.dateTime();
@@ -44,11 +44,12 @@ export default {
                 this.dateTime();
             }, 1000)
         },
+
         timeFormate() {
             const newtime = new Date();
-            this.time.hour = this.getIncrease(newtime.getHour(), 2);
-            this.time.minute = this.getIncrease(newtime.getMinute(), 2);
-            this.time.second = this.getIncrease(newtime.getSecond(), 2);
+            this.time.hour = this.getIncrease(newtime.getHours(), 2);
+            this.time.minute = this.getIncrease(newtime.getMinutes(), 2);
+            this.time.second = this.getIncrease(newtime.getSeconds(), 2);
             this.nowTime = 
                 this.getIncrease(newtime.getFullYear(), 4) + 
                 "年" + 
@@ -56,7 +57,7 @@ export default {
                 "月" + 
                 this.getIncrease(newtime.getDate(), 2) + 
                 "日" + 
-            this.week[newtime.getDay()];
+                this.week[newtime.getDay()];
         },
         getIncrease(num, digit) {
             var increase = "";

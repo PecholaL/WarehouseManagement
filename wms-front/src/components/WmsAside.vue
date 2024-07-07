@@ -5,8 +5,9 @@
         active-text-color="darkorange" 
         :collapse="isCollapse" 
         :collapse-transition="false"
+        router
     >
-        <el-menu-item index="/Home">
+        <el-menu-item index="/WmsIndex">
             <i class="el-icon-house"></i>
             <span slot="title">首页</span>
         </el-menu-item>

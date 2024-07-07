@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h1>1918# Warehouse M.S. Home</h1>
-        <el-descriptions :title="'欢迎！'+user.name" :column="2" size="40" border>
+        <h1>个人中心</h1>
+        <el-descriptions :title="'欢迎！' + user.name" :column="2" size="40" border>
             <el-descriptions-item>
                 <template slot="label">
                     <i class="el-icon-s-custom"></i>
@@ -34,17 +34,18 @@
                     角色
                 </template>
                 <el-tag 
-                    :type="success"
+                    type="success"
                     disable-transitions>{{ user.roleId==0? "超级管理员" : (user.roleId==1? "管理员" : " 用户") }}
                 </el-tag>
             </el-descriptions-item>
         </el-descriptions>
+
         <DateUtils></DateUtils>
     </div>
 </template>
 
 <script>
-import DateUtils from './DateUtils';
+import DateUtils from '../DateUtils';
 export default {
     name: "WmsHome", 
     components: {DateUtils},
@@ -52,6 +53,9 @@ export default {
         return {
             user: {}
         }
+    },
+    created() {
+        this.init();
     },
     computed: {},
     methods: {
