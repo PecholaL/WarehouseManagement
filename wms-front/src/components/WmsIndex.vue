@@ -11,7 +11,7 @@
             </el-header>
 
             <el-main style="height: 100%;">
-                <WmsMain></WmsMain>
+                <router-view/>
             </el-main>
         </el-container>
 </el-container>
@@ -41,11 +41,10 @@
 <script>
 import WmsAside from "./WmsAside.vue";
 import WmsHeader from "./WmsHeader.vue";
-import WmsMain from "./WmsMain.vue";
 
 export default {
     name: "WmsIndex",
-    components: {WmsAside,WmsHeader,WmsMain},
+    components: {WmsAside,WmsHeader},
     data() {
         return {
             isCollapse: false,

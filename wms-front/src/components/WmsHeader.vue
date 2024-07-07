@@ -35,7 +35,8 @@ export default {
     },
     methods: {
         userCenter() {
-            console.log('to_user');
+            console.log('to_home');
+            this.$router.push("/Home");
         },
 
         userExit() {
