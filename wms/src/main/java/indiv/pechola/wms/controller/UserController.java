@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import indiv.pechola.wms.common.QueryPageParam;
 import indiv.pechola.wms.common.Result;
+import indiv.pechola.wms.entity.Menu;
 import indiv.pechola.wms.entity.User;
+import indiv.pechola.wms.service.MenuService;
 import indiv.pechola.wms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MenuService menuService;
 
     @GetMapping("/list")
     public List<User> list() {
@@ -100,10 +105,18 @@ public class UserController {
     // 登录
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        List<User> list = userService.lambdaQuery()
+        List<User> userList = userService.lambdaQuery()
                 .eq(User::getNo, user.getNo())
                 .eq(User::getPassword, user.getPassword())
                 .list();
-        return list.size()>0? Result.success(list.get(0)) : Result.fail();
+        if (userList.size()>0) {
+            User cUser = userList.get(0);
+            List<Menu> menuList = menuService.lambdaQuery().like(Menu::getMenuright, cUser.getRoleId()).list();
+            HashMap<String,Object> res = new HashMap<>();
+            res.put("user", cUser);
+            res.put("menu", menuList);
+            return Result.success(res);
+        }
+        return Result.fail();
     }
 }

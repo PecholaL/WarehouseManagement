@@ -55,7 +55,8 @@ export default {
                         console.log(res);
                         if(res.code==200) {
                             sessionStorage.setItem("CurUser", JSON.stringify(res.data));
-                            this.$router.replace('/WmsIndex');
+                            console.log(res.data.menu);
+                            this.$router.replace('/index');
                         } else {
                             this.confirm_disabled = false;
                             alert('验证失败，用户或密码错误！');

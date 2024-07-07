@@ -3,6 +3,8 @@ import WmsLogin from "../WmsLogin.vue";
 import WmsIndex from "../WmsIndex.vue";
 import WmsHome from "../WmsIndex/WmsHome.vue";
 import WmsMain from "../WmsIndex/WmsMain.vue";
+import WmsAdminManage from "../WmsIndex/WmsAdminManage.vue";
+import WmsUserManage from "../WmsIndex/WmsUserManage.vue";
 
 const routes = [
     {
@@ -11,7 +13,7 @@ const routes = [
         component: WmsLogin
     },
     {
-        path: '/WmsIndex',
+        path: '/index',
         component: WmsIndex,
         children: [
             {
@@ -23,12 +25,28 @@ const routes = [
                 component: WmsMain,
             },
             {
-                path: 'WmsHome',
+                path: 'home',
                 name: 'home',
                 meta: {
                     title: "人员管理"
                 },
                 component: WmsHome,
+            },
+            {
+                path: 'admin',
+                name: 'admin',
+                meta: {
+                    title: "管理员管理"
+                },
+                component: WmsAdminManage,
+            },
+            {
+                path: 'user',
+                name: 'user',
+                meta: {
+                    title: "用户管理"
+                },
+                component: WmsUserManage,
             }
         ]
     }

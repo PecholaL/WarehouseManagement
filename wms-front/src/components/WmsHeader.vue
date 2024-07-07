@@ -36,7 +36,7 @@ export default {
     methods: {
         userCenter() {
             console.log('to_home');
-            this.$router.push("/WmsIndex/WmsHome");
+            this.$router.push("/index/home");
         },
 
         userExit() {
