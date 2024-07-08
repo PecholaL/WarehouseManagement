@@ -1,56 +1,30 @@
 import Vue from "vue";
 import Vuex from "vuex";
-// import router from "../router"
-// import WmsIndex from "../WmsIndex.vue";
-// import WmsHome from "../WmsMain/WmsHome.vue";
-// import WmsMain from "../WmsMain/WmsMain.vue";
-// import WmsAdminManage from "../WmsMain/WmsAdminManage.vue";
-// import WmsUserManage from "../WmsMain/WmsUserManage.vue";
+import router, {resetRouter} from "../router"
 Vue.use(Vuex);
 
-// function addNewRoute(menuList) {
-//     console.log(menuList);
-//     let routes = router.options.routes;
-//     console.log(routes);
-    // {
-    //     path: '/main',
-    //     component: WmsIndex,
-    //     children: [
-    //         {
-    //             path: '/',
-    //             name: 'index',
-    //             meta: {
-    //                 title: "首页"
-    //             },
-    //             component: WmsMain,
-    //         },
-    //         {
-    //             path: 'home',
-    //             name: 'home',
-    //             meta: {
-    //                 title: "人员管理"
-    //             },
-    //             component: WmsHome,
-    //         },
-    //         {
-    //             path: 'admin',
-    //             name: 'admin',
-    //             meta: {
-    //                 title: "管理员管理"
-    //             },
-    //             component: WmsAdminManage,
-    //         },
-    //         {
-    //             path: 'user',
-    //             name: 'user',
-    //             meta: {
-    //                 title: "用户管理"
-    //             },
-    //             component: WmsUserManage,
-    //         }
-    //     ]
-    // }
-// }
+function addNewRoute(menuList) {
+    let routes = router.options.routes;
+    routes.forEach(routeItem=>{
+        if(routeItem.path=='/main') {
+            menuList.forEach(menu=>{
+                let childRoute = {
+                    path: '/main/'+menu.menuclick,
+                    name: menu.menuname,
+                    meta: {
+                        title: menu.menuname
+                    },
+                    component: ()=>import('../'+menu.menucomponent)
+                };
+                routeItem.children.push(childRoute);
+            })
+        }
+    });
+    resetRouter();
+    routes.forEach(route=>{
+        router.addRoute(route);
+    })
+}
 
 
 // export default new Vuex.Store({
@@ -60,8 +34,10 @@ const store = new Vuex.Store({
     },
     mutations: {
         setMenu(state, menuList) {
+            // 传入用于动态生成页面的menu参数
             state.menu = menuList;
-            // addNewRoute(menuList);
+            // 设置动态路由
+            addNewRoute(menuList);
         }
     },
     getters: {
