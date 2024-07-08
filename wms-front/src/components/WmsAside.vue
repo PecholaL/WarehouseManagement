@@ -7,13 +7,14 @@
         :collapse-transition="false"
         router
     >
-        <el-menu-item index="/index">
+        <el-menu-item index="/main">
             <i class="el-icon-house"></i>
             <span slot="title">首页</span>
         </el-menu-item>
-        <el-menu-item :index="'/index/'+item.menuClick" v-for="(item,i) in menu" :key="i">
-            <i :class="item.menuIcon"></i>
-            <span slot="title">{{ item.menuName }}</span>
+        <!-- 这里注意后端传来的menu数组中menu对象的field名在此变为了小写 -->
+        <el-menu-item :index="'/main/'+item.menuclick" v-for="(item,i) in menu" :key="i">
+            <i :class="item.menuicon"></i>
+            <span slot="title">{{ item.menuname }}</span>
         </el-menu-item>
     </el-menu>
 </template>
@@ -23,18 +24,14 @@ export default {
     name: "WmsAside", 
     data() {
         return {
-            menu: [
-                {
-                    menuClick: 'admin',
-                    menuName: '管理员管理',
-                    menuIcon: 'el-icon-s-custom'
-                },
-                {
-                    menuClick: 'user',
-                    menuName: '用户管理',
-                    menuIcon: 'el-icon-user-solid'
-                }
-            ]
+
+        }
+    },
+    computed: {
+        "menu": {
+            get() {
+                return this.$store.state.menu;
+            }
         }
     },
     props: {

@@ -1,10 +1,10 @@
 import VueRouter from "vue-router";
 import WmsLogin from "../WmsLogin.vue";
 import WmsIndex from "../WmsIndex.vue";
-import WmsHome from "../WmsIndex/WmsHome.vue";
-import WmsMain from "../WmsIndex/WmsMain.vue";
-import WmsAdminManage from "../WmsIndex/WmsAdminManage.vue";
-import WmsUserManage from "../WmsIndex/WmsUserManage.vue";
+import WmsHome from "../WmsMain/WmsHome.vue";
+import WmsMain from "../WmsMain/WmsMain.vue";
+import WmsAdminManage from "../WmsMain/WmsAdminManage.vue";
+import WmsUserManage from "../WmsMain/WmsUserManage.vue";
 
 const routes = [
     {
@@ -13,7 +13,7 @@ const routes = [
         component: WmsLogin
     },
     {
-        path: '/index',
+        path: '/main',
         component: WmsIndex,
         children: [
             {
@@ -50,15 +50,15 @@ const routes = [
             }
         ]
     }
-]
+];
 
 const router = new VueRouter({
     mode: 'history',
     routes
-})
-const VueRouterPush = VueRouter.prototype.push
+});
+const VueRouterPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push (to) {
     return VueRouterPush.call(this, to).catch(err=>err)
-}
+};
 
 export default router;
