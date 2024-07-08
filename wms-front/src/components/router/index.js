@@ -19,7 +19,7 @@ const routes = [
                 meta: {
                     title: "首页"
                 },
-                component: WmsMain,
+                component: WmsHome,
             },
             {
                 path: 'home',
@@ -27,7 +27,7 @@ const routes = [
                 meta: {
                     title: "人员管理"
                 },
-                component: WmsHome,
+                component: WmsMain,
             }
         ]
     }

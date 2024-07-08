@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import router, {resetRouter} from "../router"
+import router, {resetRouter} from "../router";
+import createPersistedState from "vuex-persistedstate";
+
 Vue.use(Vuex);
 
 function addNewRoute(menuList) {
@@ -38,13 +40,18 @@ const store = new Vuex.Store({
             state.menu = menuList;
             // 设置动态路由
             addNewRoute(menuList);
+        },
+        loadPersistedstateMenu(state, menuList) {
+            // 设置动态路由
+            addNewRoute(menuList);
         }
     },
     getters: {
         getMenu(state) {
             return state.menu;
         }
-    }
+    },
+    plugins: [createPersistedState()]
 });
 
 export default store;

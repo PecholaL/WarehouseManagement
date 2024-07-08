@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>个人中心</h1>
+        <!-- <h1>个人中心</h1> -->
         <el-descriptions :title="'欢迎！' + user.name" :column="2" size="40" border>
             <el-descriptions-item>
                 <template slot="label">
