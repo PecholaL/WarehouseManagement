@@ -56,6 +56,7 @@ export default {
                         if(res.code==200) {
                             sessionStorage.setItem("CurUser", JSON.stringify(res.data));
                             console.log(res.data.menu);
+                            this.$store.commit("setMenu", res.data.menu);
                             this.$router.replace('/index');
                         } else {
                             this.confirm_disabled = false;
