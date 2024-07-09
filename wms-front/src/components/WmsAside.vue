@@ -8,7 +8,7 @@
         router
     >
         <el-menu-item index="/main">
-            <i class="el-icon-house"></i>
+            <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
         </el-menu-item>
         <!-- 这里注意后端传来的menu数组中menu对象的field名在此变为了小写 -->

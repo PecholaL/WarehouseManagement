@@ -6,15 +6,6 @@
                 suffix-icon="el-icon-search" style="width: 15%;" 
                 @keyup.enter.native="loadPost">
             </el-input>
-            <el-select v-model="sex" filterable placeholder="请选择性别" 
-                size="small" style="margin-left: 5px; width: 10%">
-                <el-option
-                    v-for="item in sexes" 
-                    :key="item.value" 
-                    :label="item.label" 
-                    :value="item.value">
-                </el-option>
-            </el-select>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
             <el-button size="mini" type="success" style="margin-left: 5px" @click="resetParam">重置</el-button>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="add">新增</el-button>
@@ -25,9 +16,9 @@
         >
             <el-table-column prop="id" label="ID" width="80">
             </el-table-column>
-            <el-table-column prop="name" label="仓库" width="120">
+            <el-table-column prop="name" label="仓库" width="240">
             </el-table-column>
-            <el-table-column prop="note" label="备注" width="120">
+            <el-table-column prop="note" label="备注" width="460">
             </el-table-column>
             <el-table-column prop="operate" label="操作" width="150">
                 <template slot-scope="scope">
@@ -78,90 +69,41 @@
 export default {
     name: "WmsStorageManage",
     data() {
-        let checkAge = (value, rule, callback) => {
-            if(value>150){
-                callback(new Error('年龄过大'));
-            } else {
-                callback();
-            }
-        };
-        let checkDuplicate =(value, rule, callback) => {
-            this.$axios.get(this.$httpUrl + '/user/findByNo?no='+this.form.no).then(res=>{
-                if(res.data.code==200) {
-                    callback(new Error('账号已存在'));
-                } else {
-                    callback();
-                }
-            })
-        };
         return {
             tableData: [],
             pageSize: 5,
             pageNum: 1,
             total: 0,
             name: '',
-            sex: '',
-            sexes: [
-                {
-                    value: '1',
-                    label: '男'
-                },
-                {
-                    value: '0',
-                    label: '女'
-                }
-            ],
             dialogVisible: false,
             saveOrModify: '',
             form: {
-                no: '',
-                password: '',
                 name: '',
-                sex: '0',
-                age: '',
-                phone: '',
-                roleId: '2'
+                note: ''
             },
             rules: {
-                no: [
-                    {required: true, message: '请输入账号', trigger: 'blur'},
-                    {min: 4, max: 10, message: '长度在4到10个字符', trigger: 'blur'},
-                    {validator: checkDuplicate, trigger: 'blur'}
-                ],
                 name: [
-                    {required: true, message: '请输入名字', trigger: 'blur'}
+                    {required: true, message: '请输入仓库名', trigger: 'blur'}
                 ],
-                password: [
-                    {required: true, message: '请设置密码', trigger: 'blur'},
-                    {min: 3, max: 10, message: '长度在3到10个字符', trigger: 'blur'}
-                ],
-                age: [
-                    {required: true, message: '请输入年龄', trigger: 'blur'},
-                    {min: 1, max: 3, message: '请输入正确年龄', trigger: 'blur'},
-                    {pattern: /^([1-9][0-9]*){1,3}$/, message: '请输入正确年龄', trigger: 'blur'},
-                    {validator: checkAge, trigger: 'blur'}
-                ],
-                phone: [
-                    {required: true, message: '请输入手机号', trigger: 'blur'},
-                    {pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur'}
+                note: [
+                    {required: true, message: '备注', trigger: 'blur'}
                 ]
             }
         }
     },
     methods: {
         loadGet() {
-            this.$axios.get(this.$httpUrl + '/user/list').then(res=>res.data).then(res=>{
+            this.$axios.get(this.$httpUrl + '/storage/list').then(res=>res.data).then(res=>{
                 console.log(res);
             })
         },
 
         loadPost() {
-            this.$axios.post(this.$httpUrl + '/user/listPage', {
+            this.$axios.post(this.$httpUrl + '/storage/listPage', {
                 pageSize: this.pageSize,
                 pageNum: this.pageNum,
                 param:{
                     name: this.name,
-                    sex: this.sex
                 }
             }).then(res=>res.data).then(res=>{
                 console.log(res.code);
@@ -189,7 +131,7 @@ export default {
 
         resetParam() {
             this.name='';
-            this.sex='';
+            this.note='';
         },
 
         resetForm() {
@@ -204,7 +146,7 @@ export default {
         },
 
         doSave() {
-            this.$axios.post(this.$httpUrl + '/user/' + this.saveOrModify, this.form).then(res=>res.data).then(res=>{
+            this.$axios.post(this.$httpUrl + '/storage/' + this.saveOrModify, this.form).then(res=>res.data).then(res=>{
                 console.log(res.code);
                 if(res.code==200) {
                     this.$message({
@@ -243,19 +185,13 @@ export default {
         modify(row) {
             this.dialogVisible = true;
             this.$nextTick(()=>{
-                this.form.id = row.id;
-                this.form.no = row.no+'';
                 this.form.name = row.name+'';
-                this.form.password = '';
-                this.form.sex = row.sex+'';
-                this.form.age = row.age+'';
-                this.form.phone = row.phone+'';
-                this.form.roleId = row.roleId;
+                this.form.note = row.note+'';
             })
         },
 
         del(id) {
-            this.$axios.get(this.$httpUrl + '/user/delete?id=' + id).then(res=>res.data).then(res=>{
+            this.$axios.get(this.$httpUrl + '/storage/delete?id=' + id).then(res=>res.data).then(res=>{
                 console.log(res.code);
                 if(res.code==200) {
                     this.$message({
