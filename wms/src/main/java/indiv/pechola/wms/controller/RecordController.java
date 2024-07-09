@@ -54,7 +54,7 @@ public class RecordController {
         if(StringUtils.isNotBlank(storage) && !storage.equals("null")) {
 //            lambdaQueryWrapper.like(Record::getStorage, name);
         }
-        IPage res = recordService.page(page, lambdaQueryWrapper);
+        IPage res = recordService.pageCustom(page, lambdaQueryWrapper);
 
         return Result.success(res.getTotal(), res.getRecords());
     }

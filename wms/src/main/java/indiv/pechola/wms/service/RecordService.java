@@ -1,5 +1,8 @@
 package indiv.pechola.wms.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import indiv.pechola.wms.entity.Record;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface RecordService extends IService<Record> {
 
+    IPage pageCustom(Page<Record> page, Wrapper wrapper);
 }
