@@ -10,17 +10,17 @@
             <el-button size="mini" type="success" style="margin-left: 5px" @click="resetParam">重置</el-button>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="add">新增</el-button>
         </div>
-        <el-table :data="tableData"
+        <el-table
+            :data="tableData"
             :header-cell-style="{background:'#ffcc99', color:'#555'}"
-
         >
-            <el-table-column prop="id" label="ID" width="80">
+            <el-table-column prop="id" label="ID" min-width="8%">
             </el-table-column>
-            <el-table-column prop="name" label="仓库" width="240">
+            <el-table-column prop="name" label="仓库" min-width="24%">
             </el-table-column>
-            <el-table-column prop="note" label="备注" width="460">
+            <el-table-column prop="note" label="备注" min-width="46%">
             </el-table-column>
-            <el-table-column prop="operate" label="操作" width="150">
+            <el-table-column prop="operate" label="操作" min-width="15%">
                 <template slot-scope="scope">
                     <el-button size="small" type="success" @click="modify(scope.row)">编辑</el-button>
                     <el-popconfirm title="确定删除吗？" @confirm="del(scope.row.id)">

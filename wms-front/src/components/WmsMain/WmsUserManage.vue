@@ -23,31 +23,31 @@
             :header-cell-style="{background:'#ffcc99', color:'#555'}"
 
         >
-            <el-table-column prop="id" label="ID" width="80">
+            <el-table-column prop="id" label="ID" min-width="8%">
             </el-table-column>
-            <el-table-column prop="no" label="账号" width="120">
+            <el-table-column prop="no" label="账号" min-width="12%">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
+            <el-table-column prop="name" label="姓名" min-width="12%">
             </el-table-column>
-            <el-table-column prop="sex" label="性别" width="80">
+            <el-table-column prop="sex" label="性别" min-width="8%">
                 <template slot-scope="scope">
                     <el-tag
                         :type="scope.row.sex === 1 ? 'primary' : 'success' "
                         disable-transition>{{ scope.row.sex === 1 ? '男' : '女' }}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="age" label="年龄" width="80">
+            <el-table-column prop="age" label="年龄" min-width="8%">
             </el-table-column>
-            <el-table-column prop="phone" label="电话" width="180">
+            <el-table-column prop="phone" label="电话" min-width="18%">
             </el-table-column>
-            <el-table-column prop="roleId" label="角色" width="120">
+            <el-table-column prop="roleId" label="角色" min-width="12%">
                 <template slot-scope="scope">
                     <el-tag
                         :type="scope.row.roleId === 0 ? 'danger' : (scope.row.roleId === 1 ? 'primary' : 'success') "
                         disable-transition>{{ scope.row.roleId === 0 ? '超级管理员' : (scope.row.roleId === 1 ? '管理员' : '用户') }}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="operate" label="操作" width="150">
+            <el-table-column prop="operate" label="操作" min-width="15%">
                 <template slot-scope="scope">
                     <el-button size="small" type="success" @click="modify(scope.row)">编辑</el-button>
                     <el-popconfirm title="确定删除吗？" @confirm="del(scope.row.id)">
