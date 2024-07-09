@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import indiv.pechola.wms.common.QueryPageParam;
 import indiv.pechola.wms.common.Result;
 import indiv.pechola.wms.entity.Storage;
-import indiv.pechola.wms.entity.User;
 import indiv.pechola.wms.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

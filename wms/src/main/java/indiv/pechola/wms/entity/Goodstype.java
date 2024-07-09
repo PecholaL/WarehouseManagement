@@ -1,5 +1,7 @@
 package indiv.pechola.wms.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -22,6 +24,9 @@ import lombok.EqualsAndHashCode;
 public class Goodstype implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @TableId(type = IdType.AUTO)
+    private String id;
 
     private String name;
 

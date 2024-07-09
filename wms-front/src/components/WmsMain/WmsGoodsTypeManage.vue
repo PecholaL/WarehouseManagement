@@ -46,7 +46,7 @@
             width="30%"
             center>
             <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-                <el-form-item label="仓库名" prop="name">
+                <el-form-item label="货物" prop="name">
                     <el-col :span="18">
                         <el-input v-model="form.name"></el-input>
                     </el-col>
@@ -93,13 +93,13 @@ export default {
     },
     methods: {
         loadGet() {
-            this.$axios.get(this.$httpUrl + '/storage/list').then(res=>res.data).then(res=>{
+            this.$axios.get(this.$httpUrl + '/goodstype/list').then(res=>res.data).then(res=>{
                 console.log(res);
             })
         },
 
         loadPost() {
-            this.$axios.post(this.$httpUrl + '/storage/listPage', {
+            this.$axios.post(this.$httpUrl + '/goodstype/listPage', {
                 pageSize: this.pageSize,
                 pageNum: this.pageNum,
                 param:{
@@ -146,7 +146,7 @@ export default {
         },
 
         doSave() {
-            this.$axios.post(this.$httpUrl + '/storage/' + this.saveOrModify, this.form).then(res=>res.data).then(res=>{
+            this.$axios.post(this.$httpUrl + '/goodstype/' + this.saveOrModify, this.form).then(res=>res.data).then(res=>{
                 console.log(res.code);
                 if(res.code==200) {
                     this.$message({
@@ -192,7 +192,7 @@ export default {
         },
 
         del(id) {
-            this.$axios.get(this.$httpUrl + '/storage/delete?id=' + id).then(res=>res.data).then(res=>{
+            this.$axios.get(this.$httpUrl + '/goodstype/delete?id=' + id).then(res=>res.data).then(res=>{
                 console.log(res.code);
                 if(res.code==200) {
                     this.$message({
