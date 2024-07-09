@@ -28,7 +28,7 @@ import java.util.List;
 public class StorageController {
 
     @Autowired
-    StorageService storageService;
+    private StorageService storageService;
     @GetMapping("/list")
     public Result list() {
         List<Storage> list = storageService.lambdaQuery().list();

@@ -2,6 +2,7 @@ package indiv.pechola.wms.mapper;
 
 import indiv.pechola.wms.entity.Record;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author pechola
  * @since 2024-07-09
  */
+
+@Mapper
 public interface RecordMapper extends BaseMapper<Record> {
 
 }

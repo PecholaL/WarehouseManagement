@@ -29,7 +29,7 @@ import java.util.List;
 public class GoodstypeController {
 
     @Autowired
-    GoodstypeService goodstypeService;
+    private GoodstypeService goodstypeService;
 
     @GetMapping("/list")
     public Result list() {

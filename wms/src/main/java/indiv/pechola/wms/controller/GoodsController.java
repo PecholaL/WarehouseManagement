@@ -28,7 +28,7 @@ import java.util.List;
 public class GoodsController {
 
     @Autowired
-    GoodsService goodsService;
+    private GoodsService goodsService;
     @GetMapping("/list")
     public List<Goods> list() {
         return goodsService.list();

@@ -3,7 +3,7 @@
         <span class="time" id="time">
             今天是: <span class="date">{{ nowTime }}</span>
             <span class="hour" style="">{{ time.hour }}</span>
-            <a class="split">:</a>
+            <a>:</a>
             <span class="minute" style="">{{ time.minute }}</span>
             <a class="split">:</a>
             <span class="second" style="">{{ time.second }}</span>
