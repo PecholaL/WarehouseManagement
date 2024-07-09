@@ -6,6 +6,22 @@
                 suffix-icon="el-icon-search" style="width: 15%;" 
                 @keyup.enter.native="loadPost">
             </el-input>
+            <el-select v-model="storage" style="margin-left: 5px;" size="small" placeholder="请选择仓库">
+                <el-option
+                    v-for="item in storageData"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+            <el-select v-model="goodstype" style="margin-left: 5px;" size="small" placeholder="请选择货物类型">
+                <el-option
+                    v-for="item in goodsTypeData"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
             <el-button size="mini" type="success" style="margin-left: 5px" @click="resetParam">重置</el-button>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="add">新增</el-button>
@@ -59,17 +75,31 @@
                 </el-form-item>
                 <el-form-item label="类型" prop="goodstype">
                     <el-col :span="18">
-                        <el-input type="textarea" v-model="form.goodstype"></el-input>
+                        <el-select v-model="form.goodstype" placeholder="请选择货物类型">
+                            <el-option
+                                v-for="item in goodsTypeData"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="仓库" prop="storage">
                     <el-col :span="18">
-                        <el-input type="textarea" v-model="form.storage"></el-input>
+                        <el-select v-model="form.storage" placeholder="请选择仓库">
+                            <el-option
+                                v-for="item in storageData"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="数量" prop="count">
                     <el-col :span="18">
-                        <el-input type="textarea" v-model="form.count"></el-input>
+                        <el-input v-model="form.count"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="备注" prop="note">
@@ -100,11 +130,14 @@ export default {
 
         return {
             storageData: [],
+            goodsTypeData: [],
             tableData: [],
             pageSize: 5,
             pageNum: 1,
             total: 0,
             name: '',
+            storage: '',
+            goodstype: '',
             dialogVisible: false,
             saveOrModify: '',
             form: {
@@ -119,10 +152,10 @@ export default {
                     {required: true, message: '请输入货物名', trigger: 'blur'}
                 ],
                 goodstype: [
-                    {required: false, message: '请输入货物类型', trigger: 'blur'}
+                    {required: true, message: '请选择货物类型', trigger: 'blur'}
                 ],
                 storage: [
-                    {required: true, message: '请输入仓库名', trigger: 'blur'}
+                    {required: true, message: '请选择仓库名', trigger: 'blur'}
                 ],
                 count: [
                     {required: true, message: '请输入数量', trigger: 'blur'},
@@ -148,6 +181,8 @@ export default {
                 pageNum: this.pageNum,
                 param:{
                     name: this.name,
+                    goodstype: this.goodstype,
+                    storage: this.storage
                 }
             }).then(res=>res.data).then(res=>{
                 console.log(res.code);
@@ -211,7 +246,8 @@ export default {
 
         resetParam() {
             this.name='';
-            this.note='';
+            this.storage='';
+            this.goodstype='';
         },
 
         resetForm() {
