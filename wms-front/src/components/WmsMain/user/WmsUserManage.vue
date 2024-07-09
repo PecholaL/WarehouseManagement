@@ -115,7 +115,7 @@
 
 <script>
 export default {
-    name: "WmsMain",
+    name: "WmsUserManage",
     data() {
         let checkAge = (value, rule, callback) => {
             if(value>150){
@@ -200,7 +200,8 @@ export default {
                 pageNum: this.pageNum,
                 param:{
                     name: this.name,
-                    sex: this.sex
+                    sex: this.sex,
+                    roleId: '2'
                 }
             }).then(res=>res.data).then(res=>{
                 console.log(res.code);

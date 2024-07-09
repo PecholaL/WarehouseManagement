@@ -2,50 +2,29 @@
     <div>
         <div style="margin-bottom: 1%;" align="left">
             <el-input v-model="name" 
-                size="small" placeholder="请输入姓名" 
+                size="small" placeholder="请输入货物名" 
                 suffix-icon="el-icon-search" style="width: 15%;" 
                 @keyup.enter.native="loadPost">
             </el-input>
-            <el-select v-model="sex" filterable placeholder="请选择性别" 
-                size="small" style="margin-left: 5px; width: 10%">
-                <el-option
-                    v-for="item in sexes" 
-                    :key="item.value" 
-                    :label="item.label" 
-                    :value="item.value">
-                </el-option>
-            </el-select>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
             <el-button size="mini" type="success" style="margin-left: 5px" @click="resetParam">重置</el-button>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="add">新增</el-button>
         </div>
-        <el-table :data="tableData"
+        <el-table
+            :data="tableData"
             :header-cell-style="{background:'#ffcc99', color:'#555'}"
-
         >
             <el-table-column prop="id" label="ID" min-width="8%">
             </el-table-column>
-            <el-table-column prop="no" label="账号" min-width="12%">
+            <el-table-column prop="name" label="货物" min-width="20%">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" min-width="12%">
+            <el-table-column prop="goodstype" label="类型" min-width="10%" :formatter="formatGoodsType">
             </el-table-column>
-            <el-table-column prop="sex" label="性别" min-width="8%">
-                <template slot-scope="scope">
-                    <el-tag
-                        :type="scope.row.sex === 1 ? 'primary' : 'success' "
-                        disable-transition>{{ scope.row.sex === 1 ? '男' : '女' }}</el-tag>
-                </template>
+            <el-table-column prop="storage" label="仓库" min-width="10%" :formatter="formatStorage">
             </el-table-column>
-            <el-table-column prop="age" label="年龄" min-width="8%">
+            <el-table-column prop="count" label="数量" min-width="10%">
             </el-table-column>
-            <el-table-column prop="phone" label="电话" min-width="18%">
-            </el-table-column>
-            <el-table-column prop="roleId" label="角色" min-width="12%">
-                <template slot-scope="scope">
-                    <el-tag
-                        :type="scope.row.roleId === 0 ? 'danger' : (scope.row.roleId === 1 ? 'primary' : 'success') "
-                        disable-transition>{{ scope.row.roleId === 0 ? '超级管理员' : (scope.row.roleId === 1 ? '管理员' : '用户') }}</el-tag>
-                </template>
+            <el-table-column prop="note" label="备注" min-width="46%">
             </el-table-column>
             <el-table-column prop="operate" label="操作" min-width="15%">
                 <template slot-scope="scope">
@@ -73,35 +52,29 @@
             width="30%"
             center>
             <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-                <el-form-item label="账号" prop="no">
-                    <el-col :span="18">
-                        <el-input v-model="form.no"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                    <el-col :span="18">
-                        <el-input v-model="form.password"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="姓名" prop="name">
+                <el-form-item label="货物" prop="name">
                     <el-col :span="18">
                         <el-input v-model="form.name"></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="性别">
-                    <el-radio-group v-model="form.sex">
-                        <el-radio label="1">男</el-radio>
-                        <el-radio label="0">女</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="年龄" prop="age">
+                <el-form-item label="类型" prop="goodstype">
                     <el-col :span="18">
-                        <el-input v-model="form.age"></el-input>
+                        <el-input type="textarea" v-model="form.goodstype"></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="电话" prop="phone">
+                <el-form-item label="仓库" prop="storage">
                     <el-col :span="18">
-                        <el-input v-model="form.phone"></el-input>
+                        <el-input type="textarea" v-model="form.storage"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="数量" prop="count">
+                    <el-col :span="18">
+                        <el-input type="textarea" v-model="form.count"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="备注" prop="note">
+                    <el-col :span="18">
+                        <el-input type="textarea" v-model="form.note"></el-input>
                     </el-col>
                 </el-form-item>
             </el-form>
@@ -115,93 +88,66 @@
 
 <script>
 export default {
-    name: "WmsAdminManage",
+    name: "WmsGoodsManage",
     data() {
-        let checkAge = (value, rule, callback) => {
-            if(value>150){
-                callback(new Error('年龄过大'));
+        let checkCount = (rule, value, callback) => {
+            if(value>9999) {
+                callback(new Error('数量过大'));
             } else {
                 callback();
             }
         };
-        let checkDuplicate =(value, rule, callback) => {
-            this.$axios.get(this.$httpUrl + '/user/findByNo?no='+this.form.no).then(res=>{
-                if(res.data.code==200) {
-                    callback(new Error('账号已存在'));
-                } else {
-                    callback();
-                }
-            })
-        };
+
         return {
+            storageData: [],
             tableData: [],
             pageSize: 5,
             pageNum: 1,
             total: 0,
             name: '',
-            sex: '',
-            sexes: [
-                {
-                    value: '1',
-                    label: '男'
-                },
-                {
-                    value: '0',
-                    label: '女'
-                }
-            ],
             dialogVisible: false,
             saveOrModify: '',
             form: {
-                no: '',
-                password: '',
                 name: '',
-                sex: '0',
-                age: '',
-                phone: '',
-                roleId: '2'
+                goodstype: '',
+                storage: '',
+                count: '',
+                note: ''
             },
             rules: {
-                no: [
-                    {required: true, message: '请输入账号', trigger: 'blur'},
-                    {min: 4, max: 10, message: '长度在4到10个字符', trigger: 'blur'},
-                    {validator: checkDuplicate, trigger: 'blur'}
-                ],
                 name: [
-                    {required: true, message: '请输入名字', trigger: 'blur'}
+                    {required: true, message: '请输入货物名', trigger: 'blur'}
                 ],
-                password: [
-                    {required: true, message: '请设置密码', trigger: 'blur'},
-                    {min: 3, max: 10, message: '长度在3到10个字符', trigger: 'blur'}
+                goodstype: [
+                    {required: false, message: '请输入货物类型', trigger: 'blur'}
                 ],
-                age: [
-                    {required: true, message: '请输入年龄', trigger: 'blur'},
-                    {min: 1, max: 3, message: '请输入正确年龄', trigger: 'blur'},
-                    {pattern: /^([1-9][0-9]*){1,3}$/, message: '请输入正确年龄', trigger: 'blur'},
-                    {validator: checkAge, trigger: 'blur'}
+                storage: [
+                    {required: true, message: '请输入仓库名', trigger: 'blur'}
                 ],
-                phone: [
-                    {required: true, message: '请输入手机号', trigger: 'blur'},
-                    {pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur'}
+                count: [
+                    {required: true, message: '请输入数量', trigger: 'blur'},
+                    {pattern: /^([1-9][0-9]*){1,4}$/, message: '数量必须为整数', trigger: 'blur'},
+                    {validator: checkCount, trigger: 'blur'}
+                ],
+                note: [
+                    {required: false, message: '备注', trigger: 'blur'}
                 ]
             }
         }
     },
     methods: {
         loadGet() {
-            this.$axios.get(this.$httpUrl + '/user/list').then(res=>res.data).then(res=>{
+            this.$axios.get(this.$httpUrl + '/goods/list').then(res=>res.data).then(res=>{
                 console.log(res);
             })
         },
 
         loadPost() {
-            this.$axios.post(this.$httpUrl + '/user/listPage', {
+            this.$axios.post(this.$httpUrl + '/goods/listPage', {
                 pageSize: this.pageSize,
                 pageNum: this.pageNum,
                 param:{
                     name: this.name,
-                    sex: this.sex,
-                    roleId: '1'
                 }
             }).then(res=>res.data).then(res=>{
                 console.log(res.code);
@@ -212,6 +158,42 @@ export default {
                     alert("获取数据失败");
                 }
             })
+        },
+
+        loadStorage() {
+            this.$axios.get(this.$httpUrl + '/storage/list').then(res=>res.data).then(res=>{
+                console.log(res.code);
+                if(res.code==200) {
+                    this.storageData = res.data;
+                } else {
+                    alert("获取仓库数据失败");
+                }
+            })
+        },
+
+        loadGoodsType() {
+            this.$axios.get(this.$httpUrl + '/goodstype/list').then(res=>res.data).then(res=>{
+                console.log(res.code);
+                if(res.code==200) {
+                    this.goodsTypeData = res.data;
+                } else {
+                    alert("获取货物类型数据失败");
+                }
+            })
+        },
+
+        formatStorage(row) {
+            let temp = this.storageData.find(item=>{
+                return item.id == row.storage;
+            });
+            return temp && temp.name;
+        },
+
+        formatGoodsType(row) {
+            let temp = this.goodsTypeData.find(item=>{
+                return item.id == row.goodstype;
+            });
+            return temp && temp.name;
         },
 
         handleSizeChange(val) {
@@ -229,7 +211,7 @@ export default {
 
         resetParam() {
             this.name='';
-            this.sex='';
+            this.note='';
         },
 
         resetForm() {
@@ -240,11 +222,12 @@ export default {
             this.dialogVisible = true;
             this.$nextTick(()=>{
                 this.resetForm();
+                this.form.id = '';
             })
         },
 
         doSave() {
-            this.$axios.post(this.$httpUrl + '/user/' + this.saveOrModify, this.form).then(res=>res.data).then(res=>{
+            this.$axios.post(this.$httpUrl + '/goods/' + this.saveOrModify, this.form).then(res=>res.data).then(res=>{
                 console.log(res.code);
                 if(res.code==200) {
                     this.$message({
@@ -284,18 +267,16 @@ export default {
             this.dialogVisible = true;
             this.$nextTick(()=>{
                 this.form.id = row.id;
-                this.form.no = row.no+'';
                 this.form.name = row.name+'';
-                this.form.password = '';
-                this.form.sex = row.sex+'';
-                this.form.age = row.age+'';
-                this.form.phone = row.phone+'';
-                this.form.roleId = row.roleId;
+                this.form.goodstype = row.goodstype+'';
+                this.form.storage = row.storage+'';
+                this.form.count = row.count;
+                this.form.note = row.note+'';
             })
         },
 
         del(id) {
-            this.$axios.get(this.$httpUrl + '/user/delete?id=' + id).then(res=>res.data).then(res=>{
+            this.$axios.get(this.$httpUrl + '/goods/delete?id=' + id).then(res=>res.data).then(res=>{
                 console.log(res.code);
                 if(res.code==200) {
                     this.$message({
@@ -316,7 +297,8 @@ export default {
     },
 
     beforeMount() {
-        // this.loadGet();
+        this.loadStorage();
+        this.loadGoodsType();
         this.loadPost();
     }
 }

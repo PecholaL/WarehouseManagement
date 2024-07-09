@@ -30,8 +30,9 @@ public class StorageController {
     @Autowired
     StorageService storageService;
     @GetMapping("/list")
-    public List<Storage> list() {
-        return storageService.list();
+    public Result list() {
+        List<Storage> list = storageService.lambdaQuery().list();
+        return Result.success(list);
     }
 
     // 增

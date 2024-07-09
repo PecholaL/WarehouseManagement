@@ -115,7 +115,7 @@
 
 <script>
 export default {
-    name: "WmsUserManage",
+    name: "WmsAdminManage",
     data() {
         let checkAge = (value, rule, callback) => {
             if(value>150){
@@ -201,7 +201,7 @@ export default {
                 param:{
                     name: this.name,
                     sex: this.sex,
-                    roleId: '2'
+                    roleId: '1'
                 }
             }).then(res=>res.data).then(res=>{
                 console.log(res.code);
@@ -240,6 +240,7 @@ export default {
             this.dialogVisible = true;
             this.$nextTick(()=>{
                 this.resetForm();
+                this.form.id = '';
             })
         },
 

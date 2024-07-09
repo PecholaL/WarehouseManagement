@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import indiv.pechola.wms.common.QueryPageParam;
 import indiv.pechola.wms.common.Result;
 import indiv.pechola.wms.entity.Goodstype;
+import indiv.pechola.wms.entity.Storage;
 import indiv.pechola.wms.service.GoodstypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,11 @@ public class GoodstypeController {
 
     @Autowired
     GoodstypeService goodstypeService;
+
     @GetMapping("/list")
-    public List<Goodstype> list() {
-        return goodstypeService.list();
+    public Result list() {
+        List<Goodstype> list = goodstypeService.lambdaQuery().list();
+        return Result.success(list);
     }
 
     // 增

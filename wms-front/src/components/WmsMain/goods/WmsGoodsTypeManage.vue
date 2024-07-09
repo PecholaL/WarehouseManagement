@@ -142,6 +142,7 @@ export default {
             this.dialogVisible = true;
             this.$nextTick(()=>{
                 this.resetForm();
+                this.form.id = '';
             })
         },
 
