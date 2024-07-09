@@ -53,7 +53,7 @@
                 </el-form-item>
                 <el-form-item label="备注" prop="note">
                     <el-col :span="18">
-                        <el-input v-model="form.note"></el-input>
+                        <el-input type="textarea" v-model="form.note"></el-input>
                     </el-col>
                 </el-form-item>
             </el-form>
@@ -185,6 +185,7 @@ export default {
         modify(row) {
             this.dialogVisible = true;
             this.$nextTick(()=>{
+                this.form.id = row.id;
                 this.form.name = row.name+'';
                 this.form.note = row.note+'';
             })
