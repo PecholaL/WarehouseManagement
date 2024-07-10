@@ -1,2 +1,13 @@
-package indiv.pechola.wms.entity;public class RecordRes {
+package indiv.pechola.wms.entity;
+
+import lombok.Data;
+
+@Data
+public class RecordRes extends Record {
+
+    private String username;
+    private String adminname;
+    private String goodsname;
+    private String storagename;
+    private String goodstypename;
 }

@@ -32,17 +32,17 @@
         >
             <el-table-column prop="id" label="ID" min-width="8%">
             </el-table-column>
-            <el-table-column prop="name" label="货物" min-width="20%">
+            <el-table-column prop="goodsname" label="货物" min-width="20%">
             </el-table-column>
-            <el-table-column prop="goodstype" label="类型" min-width="10%">
+            <el-table-column prop="goodstypename" label="类型" min-width="15%">
             </el-table-column>
-            <el-table-column prop="storage" label="仓库" min-width="10%">
+            <el-table-column prop="storagename" label="仓库" min-width="15%">
             </el-table-column>
             <el-table-column prop="count" label="数量" min-width="10%">
             </el-table-column>
-            <el-table-column prop="adminid" label="操作人" min-width="10%">
+            <el-table-column prop="adminname" label="操作人" min-width="15%">
             </el-table-column>
-            <el-table-column prop="userid" label="申请人" min-width="10%">
+            <el-table-column prop="username" label="申请人" min-width="15%">
             </el-table-column>
             <el-table-column prop="createtime" label="操作时间" min-width="30%">
             </el-table-column>
