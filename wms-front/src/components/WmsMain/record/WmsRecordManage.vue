@@ -85,8 +85,8 @@ export default {
                 pageNum: this.pageNum,
                 param:{
                     name: this.name,
-                    goodstype: this.goodstype,
-                    storage: this.storage
+                    goodstype: this.goodstype+'',
+                    storage: this.storage+''
                 }
             }).then(res=>res.data).then(res=>{
                 console.log(res.code);
