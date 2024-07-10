@@ -24,7 +24,6 @@
             </el-select>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
             <el-button size="mini" type="success" style="margin-left: 5px" @click="resetParam">重置</el-button>
-            <el-button size="mini" type="primary" style="margin-left: 5px;" @click="add">新增</el-button>
         </div>
         <el-table
             :data="tableData"
@@ -67,6 +66,8 @@ export default {
     name: "WmsRecordManage",
     data() {
         return {
+            storageData: [],
+            goodsTypeData: [],
             tableData: [],
             pageSize: 5,
             pageNum: 1,
@@ -98,6 +99,34 @@ export default {
             })
         },
 
+        loadStorage() {
+            this.$axios.get(this.$httpUrl + '/storage/list').then(res=>res.data).then(res=>{
+                console.log(res.code);
+                if(res.code==200) {
+                    this.storageData = res.data;
+                } else {
+                    alert("获取仓库数据失败");
+                }
+            })
+        },
+
+        loadGoodsType() {
+            this.$axios.get(this.$httpUrl + '/goodstype/list').then(res=>res.data).then(res=>{
+                console.log(res.code);
+                if(res.code==200) {
+                    this.goodsTypeData = res.data;
+                } else {
+                    alert("获取货物类型数据失败");
+                }
+            })
+        },
+
+        resetParam() {
+            this.name='';
+            this.storage='';
+            this.goodstype='';
+        },
+
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
             this.pageNum = 1;
@@ -113,6 +142,8 @@ export default {
     },
 
     beforeMount() {
+        this.loadStorage();
+        this.loadGoodsType();
         this.loadPost();
     }
 }

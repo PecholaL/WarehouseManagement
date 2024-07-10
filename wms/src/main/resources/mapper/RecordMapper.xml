@@ -7,9 +7,6 @@
                (select u.name from user u where u.id=r.userId) as username,
                (select u.name from user u where u.id=r.adminId) as adminname
         from record r, goods g, storage s, goodsType gt
-        where r.goods=g.id
-          and g.storage=s.id
-          and g.goodsType=gt.id
         ${ew.customSqlSegment}
     </select>
     <!-- 通用查询映射结果 -->
