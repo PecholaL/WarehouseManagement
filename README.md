@@ -19,7 +19,7 @@ FRONT-END：Node.js + VUE + Element-UI
 ## Requirements
 JDK 18  
 VUE 2  
-DB: MariaDB 10.4.27  
+DB: MariaDB 10  
 
 ## Thanks
 Course:  
