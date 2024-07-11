@@ -28,8 +28,7 @@
         </div>
         <el-table
             :data="tableData"
-            :header-cell-style="{background:'#ffcc99', color:'#555'}"
-        >
+            :header-cell-style="{background:'#ffcc99', color:'#555'}">
             <el-table-column prop="id" label="ID" min-width="8%">
             </el-table-column>
             <el-table-column prop="name" label="货物" min-width="20%">
@@ -40,7 +39,13 @@
             </el-table-column>
             <el-table-column prop="count" label="数量" min-width="10%">
             </el-table-column>
-            <el-table-column prop="note" label="备注" min-width="46%">
+            <el-table-column prop="io" label="出入库" min-width="15%">
+                <template slot-scope="scope">
+                    <el-button size="mini" type="primary" @click="goodsIn(scope.row)">入库</el-button>
+                    <el-button size="mini" type="primary" @click="goodsOut">出库</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column prop="note" label="备注" min-width="30%">
             </el-table-column>
             <el-table-column prop="operate" label="操作" min-width="15%">
                 <template slot-scope="scope">
@@ -113,12 +118,59 @@
                 <el-button size="mini" type="primary" @click="save">确 定</el-button>
             </span>
         </el-dialog>
+
+        <!-- IO form -->
+        <el-dialog
+            title="提示"
+            :visible.sync="ioDialogVisible"
+            width="30%"
+            center>
+            <el-dialog 
+                width="80%" 
+                title="申请用户选择" 
+                :visible.sync="innerVisible" 
+                append-to-body>
+                <WmsSelectUser></WmsSelectUser>
+                <span slot="footer" class="dialog-footer">
+                    <el-button size="mini" @click="innerVisible = false">取 消</el-button>
+                    <el-button size="mini" type="primary" @click="confirmUser">确 定</el-button>
+                </span>
+            </el-dialog>
+            <el-form ref="formIo" :rules="rulesIo" :model="formIo" label-width="80px">
+                <el-form-item label="货物">
+                    <el-col :span="18">
+                        <el-input v-model="formIo.goodsname" readonly></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="变更数量" prop="count">
+                    <el-col :span="18">
+                        <el-input v-model="formIo.count"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="申请用户" prop="username">
+                    <el-col :span="18">
+                        <el-input v-model="formIo.username" @click.native="selectUser"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="备注" prop="note">
+                    <el-col :span="18">
+                        <el-input type="textarea" v-model="formIo.note"></el-input>
+                    </el-col>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="ioDialogVisible = false">取 消</el-button>
+                <el-button size="mini" type="primary" @click="doIoSave">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+import WmsSelectUser from '../user/WmsSelectUser.vue';
 export default {
     name: "WmsGoodsManage",
+    components: {WmsSelectUser},
     data() {
         let checkCount = (rule, value, callback) => {
             if(value>9999) {
@@ -129,6 +181,7 @@ export default {
         };
 
         return {
+            user: JSON.parse(sessionStorage.getItem('CurUser')),
             storageData: [],
             goodsTypeData: [],
             tableData: [],
@@ -139,12 +192,24 @@ export default {
             storage: '',
             goodstype: '',
             dialogVisible: false,
+            ioDialogVisible: false,
+            innerVisible: false,
             saveOrModify: '',
             form: {
                 name: '',
                 goodstype: '',
                 storage: '',
                 count: '',
+                note: ''
+            },
+            formIo: {
+                goods: '',
+                goodsname: '',
+                count: '',
+                username: '',
+                userid: '1',
+                adminid: '',
+                createtime: '',
                 note: ''
             },
             rules: {
@@ -165,6 +230,9 @@ export default {
                 note: [
                     {required: false, message: '备注', trigger: 'blur'}
                 ]
+            },
+            rulesIo: {
+
             }
         }
     },
@@ -254,6 +322,10 @@ export default {
             this.$refs.form.resetFields();
         },
 
+        resetFormIo() {
+            this.$refs.formIo.resetFields();
+        },
+
         add() {
             this.dialogVisible = true;
             this.$nextTick(()=>{
@@ -287,6 +359,7 @@ export default {
                 if(this.form.id) {
                     this.saveOrModify = 'modify';
                     this.doSave();
+                    this.resetForm();
                 } else {
                     if(valid) {
                         this.saveOrModify = 'save';
@@ -329,7 +402,54 @@ export default {
                 }
             });
             console.log('success submit!');
-        }
+        },
+
+        selectUser() {
+            this.innerVisible = true;
+        },
+
+        confirmUser() {
+
+        },
+
+        goodsIn(row) {
+            this.ioDialogVisible = true;
+            this.$nextTick(()=>{
+                this.resetFormIo();
+            })
+            this.formIo.goodsname = row.name;
+            this.formIo.goods = row.id;
+            this.formIo.adminid = this.user.id;
+            this.formIo.createtime = new Date();
+        },
+
+        goodsOut() {
+            this.ioDialogVisible = true;
+            this.$nextTick(()=>{
+                this.resetFormIo();
+            })
+        },
+
+        doIoSave() {
+            this.$axios.post(this.$httpUrl + '/record/save', this.formIo).then(res=>res.data).then(res=>{
+                console.log(res.code);
+                if(res.code==200) {
+                    this.$message({
+                        message: '出入库成功',
+                        type: 'success'
+                    });
+                    this.ioDialogVisible = false;
+                    this.loadPost();
+                    this.resetFormIo();
+                } else {
+                    this.$message({
+                        message: '出入库失败',
+                        type: 'fail'
+                    });
+                }
+            });
+            console.log('success IO!');
+        },
     },
 
     beforeMount() {

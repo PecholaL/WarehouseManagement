@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import indiv.pechola.wms.common.QueryPageParam;
 import indiv.pechola.wms.common.Result;
+import indiv.pechola.wms.entity.Goods;
 import indiv.pechola.wms.entity.Record;
+import indiv.pechola.wms.service.GoodsService;
 import indiv.pechola.wms.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,19 @@ public class RecordController {
 
     @Autowired
     private RecordService recordService;
+
+    @Autowired
+    private GoodsService goodsService;
+
+    @PostMapping("/save")
+    public Result save(@RequestBody Record record) {
+        Goods goods = goodsService.getById(record.getGoods());
+        int modCount = record.getCount();
+        int curCount = goods.getCount() + modCount;
+        goods.setCount(curCount);
+        goodsService.updateById(goods);
+        return recordService.save(record)? Result.success() : Result.fail();
+    }
 
     @PostMapping("/listPage")
     public Result listPage(@RequestBody QueryPageParam query) {

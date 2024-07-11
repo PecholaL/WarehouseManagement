@@ -1,5 +1,5 @@
 create table record (
-    id int not null primary key,
+    id int auto_increment not null primary key,
     goods int not null,
     userId int default null,
     adminId int default null,
