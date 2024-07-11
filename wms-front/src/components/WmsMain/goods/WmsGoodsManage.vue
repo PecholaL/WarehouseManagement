@@ -24,7 +24,7 @@
             </el-select>
             <el-button size="mini" type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
             <el-button size="mini" type="success" style="margin-left: 5px" @click="resetParam">重置</el-button>
-            <el-button size="mini" type="primary" style="margin-left: 5px;" @click="add">新增</el-button>
+            <el-button size="mini" type="primary" style="margin-left: 5px;" @click="add" v-if="user.roleId!=2">新增</el-button>
         </div>
         <el-table
             :data="tableData"
@@ -39,7 +39,7 @@
             </el-table-column>
             <el-table-column prop="count" label="数量" min-width="10%">
             </el-table-column>
-            <el-table-column prop="io" label="出入库" min-width="15%">
+            <el-table-column prop="io" label="出入库" min-width="15%" v-if="user.roleId!=2">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="goodsIn(scope.row)">入库</el-button>
                     <el-button size="mini" type="primary" @click="goodsOut(scope.row)">出库</el-button>
@@ -47,7 +47,7 @@
             </el-table-column>
             <el-table-column prop="note" label="备注" min-width="30%">
             </el-table-column>
-            <el-table-column prop="operate" label="操作" min-width="15%">
+            <el-table-column prop="operate" label="操作" min-width="15%" v-if="user.roleId!=2">
                 <template slot-scope="scope">
                     <el-button size="small" type="success" @click="modify(scope.row)">编辑</el-button>
                     <el-popconfirm title="确定删除吗？" @confirm="del(scope.row.id)">
