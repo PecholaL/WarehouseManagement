@@ -123,7 +123,7 @@
         <el-dialog
             :title='ioTitle + "登记"'
             :visible.sync="ioDialogVisible"
-            width="30%"
+            width="50%"
             center>
             <el-dialog 
                 width="70%" 
@@ -142,7 +142,7 @@
                         <el-input v-model="formIo.goodsname" readonly></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="变更数量" prop="count">
+                <el-form-item label="数量" prop="count">
                     <el-col :span="18">
                         <el-input v-model="formIo.count" placeholder="入库或出库数量"></el-input>
                     </el-col>
@@ -174,9 +174,25 @@ export default {
     data() {
         let checkCount = (rule, value, callback) => {
             if(value>9999) {
-                callback(new Error('数量过大'));
+                callback(new Error('数量超过限制'));
             } else {
                 callback();
+            }
+        };
+
+        let checkIoCount = (rule, value, callback) => {
+            if(this.formIo.inOrOut=='1') {  // 入库数量检查
+                if(value>9999) {
+                    callback(new Error('数量超过限制'));
+                } else {
+                    callback();
+                }
+            } else {  // 出库数量检查
+                if(value>this.maxOutCount) {
+                    callback(new Error('库存数量不足'));
+                } else {
+                    callback();
+                }
             }
         };
 
@@ -195,6 +211,7 @@ export default {
             ioDialogVisible: false,
             innerVisible: false,
             ioTitle: '',
+            maxOutCount: 0,
             saveOrModify: '',
             tempUser: {},
             form: {
@@ -235,7 +252,14 @@ export default {
                 ]
             },
             rulesIo: {
-
+                count: [
+                    {required: true, message: '请输入数量', trigger: 'blur'},
+                    {pattern: /^([1-9][0-9]*){1,4}$/, message: '数量必须为整数', trigger: 'blur'},
+                    {validator: checkIoCount, trigger: 'blur'},
+                ],
+                note: [
+                    {required: false, message: '备注', trigger: 'blur'}
+                ]
             }
         }
     },
@@ -437,6 +461,7 @@ export default {
 
         goodsOut(row) {
             this.ioTitle = "出库";
+            this.maxOutCount = row.count;
             this.ioDialogVisible = true;
             this.$nextTick(()=>{
                 this.resetFormIo();
@@ -449,24 +474,33 @@ export default {
         },
 
         doIoSave() {
-            this.$axios.post(this.$httpUrl + '/record/save', this.formIo).then(res=>res.data).then(res=>{
-                console.log(res.code);
-                if(res.code==200) {
-                    this.$message({
-                        message: '出入库成功',
-                        type: 'success'
+            this.$refs.formIo.validate((valid) => {
+                if(valid) {
+                    this.$axios.post(this.$httpUrl + '/record/save', this.formIo).then(res=>res.data).then(res=>{
+                        console.log(res.code);
+                        if(res.code==200) {
+                            this.$message({
+                                message: '出入库成功',
+                                type: 'success'
+                            });
+                            this.ioDialogVisible = false;
+                            this.loadPost();
+                            this.resetFormIo();
+                        } else {
+                            this.$message({
+                                message: '出入库失败',
+                                type: 'fail'
+                            });
+                        }
                     });
-                    this.ioDialogVisible = false;
-                    this.loadPost();
-                    this.resetFormIo();
+                    console.log('success IO!');
                 } else {
                     this.$message({
-                        message: '出入库失败',
+                        message: '登记失败',
                         type: 'fail'
                     });
                 }
             });
-            console.log('success IO!');
         },
     },
 
