@@ -22,6 +22,8 @@ VUE 2
 DB: MariaDB 10.4.27  
 
 ## Thanks
+Course:  
+[课程](https://www.bilibili.com/video/BV1Qe411V7TZ?p=1&vd_source=8d5101c64c259c4a82f174c9da33f943)  
 Fonts:  
 [霞鹜文楷](https://github.com/lxgw/LxgwWenKai)  
 [Intel-One-Mono](https://github.com/intel/intel-one-mono)  
