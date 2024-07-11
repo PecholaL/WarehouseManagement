@@ -129,7 +129,7 @@ export default {
         },
 
         selectCurrentChange(val) {
-            this.currentRow = val;
+            this.$emit('doSelectUser', val);
         }
 
     },

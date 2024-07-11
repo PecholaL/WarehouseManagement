@@ -126,13 +126,13 @@
             width="30%"
             center>
             <el-dialog 
-                width="80%" 
+                width="70%" 
                 title="申请用户选择" 
                 :visible.sync="innerVisible" 
                 append-to-body>
-                <WmsSelectUser></WmsSelectUser>
+                <WmsSelectUser @doSelectUser="doSelectUser"></WmsSelectUser>
                 <span slot="footer" class="dialog-footer">
-                    <el-button size="mini" @click="innerVisible = false">取 消</el-button>
+                    <el-button size="mini" @click="innerVisible=false">取 消</el-button>
                     <el-button size="mini" type="primary" @click="confirmUser">确 定</el-button>
                 </span>
             </el-dialog>
@@ -144,12 +144,12 @@
                 </el-form-item>
                 <el-form-item label="变更数量" prop="count">
                     <el-col :span="18">
-                        <el-input v-model="formIo.count"></el-input>
+                        <el-input v-model="formIo.count" placeholder="入库或出库数量"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="申请用户" prop="username">
                     <el-col :span="18">
-                        <el-input v-model="formIo.username" @click.native="selectUser"></el-input>
+                        <el-input v-model="formIo.username" placeholder="点击选择用户" @click.native="selectUser"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="备注" prop="note">
@@ -159,7 +159,7 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="ioDialogVisible = false">取 消</el-button>
+                <el-button size="mini" @click="ioDialogVisible=false">取 消</el-button>
                 <el-button size="mini" type="primary" @click="doIoSave">确 定</el-button>
             </span>
         </el-dialog>
@@ -195,6 +195,7 @@ export default {
             ioDialogVisible: false,
             innerVisible: false,
             saveOrModify: '',
+            tempUser: {},
             form: {
                 name: '',
                 goodstype: '',
@@ -207,7 +208,7 @@ export default {
                 goodsname: '',
                 count: '',
                 username: '',
-                userid: '1',
+                userid: '',
                 adminid: '',
                 createtime: '',
                 note: ''
@@ -408,8 +409,15 @@ export default {
             this.innerVisible = true;
         },
 
-        confirmUser() {
+        doSelectUser(val) {
+            console.log(val);
+            this.tempUser = val;
+        },
 
+        confirmUser() {
+            this.formIo.userid = this.tempUser.id;
+            this.formIo.username = this.tempUser.name;
+            this.innerVisible=false;
         },
 
         goodsIn(row) {
