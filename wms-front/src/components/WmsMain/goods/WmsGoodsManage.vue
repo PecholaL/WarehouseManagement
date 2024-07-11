@@ -42,7 +42,7 @@
             <el-table-column prop="io" label="出入库" min-width="15%">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="goodsIn(scope.row)">入库</el-button>
-                    <el-button size="mini" type="primary" @click="goodsOut">出库</el-button>
+                    <el-button size="mini" type="primary" @click="goodsOut(scope.row)">出库</el-button>
                 </template>
             </el-table-column>
             <el-table-column prop="note" label="备注" min-width="30%">
@@ -68,7 +68,7 @@
         </el-pagination>
 
         <el-dialog
-            title="提示"
+            title="新增货物"
             :visible.sync="dialogVisible"
             width="30%"
             center>
@@ -121,7 +121,7 @@
 
         <!-- IO form -->
         <el-dialog
-            title="提示"
+            :title='ioTitle + "登记"'
             :visible.sync="ioDialogVisible"
             width="30%"
             center>
@@ -194,6 +194,7 @@ export default {
             dialogVisible: false,
             ioDialogVisible: false,
             innerVisible: false,
+            ioTitle: '',
             saveOrModify: '',
             tempUser: {},
             form: {
@@ -211,7 +212,8 @@ export default {
                 userid: '',
                 adminid: '',
                 createtime: '',
-                note: ''
+                note: '',
+                inOrOut: '1'  // 1 for in, 2 for out
             },
             rules: {
                 name: [
@@ -421,6 +423,7 @@ export default {
         },
 
         goodsIn(row) {
+            this.ioTitle = "入库";
             this.ioDialogVisible = true;
             this.$nextTick(()=>{
                 this.resetFormIo();
@@ -429,13 +432,20 @@ export default {
             this.formIo.goods = row.id;
             this.formIo.adminid = this.user.id;
             this.formIo.createtime = new Date();
+            this.formIo.inOrOut = 1;
         },
 
-        goodsOut() {
+        goodsOut(row) {
+            this.ioTitle = "出库";
             this.ioDialogVisible = true;
             this.$nextTick(()=>{
                 this.resetFormIo();
             })
+            this.formIo.goodsname = row.name;
+            this.formIo.goods = row.id;
+            this.formIo.adminid = this.user.id;
+            this.formIo.createtime = new Date();
+            this.formIo.inOrOut = 2;
         },
 
         doIoSave() {

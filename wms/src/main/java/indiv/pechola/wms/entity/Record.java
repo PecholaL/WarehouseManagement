@@ -45,5 +45,6 @@ public class Record implements Serializable {
 
     private String note;
 
-
+    @TableField(exist = false)
+    private String inOrOut;
 }

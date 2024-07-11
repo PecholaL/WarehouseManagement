@@ -42,6 +42,10 @@ public class RecordController {
     public Result save(@RequestBody Record record) {
         Goods goods = goodsService.getById(record.getGoods());
         int modCount = record.getCount();
+        if("2".equals(record.getInOrOut())) {
+            modCount = -1 * modCount;
+            record.setCount(modCount);
+        }
         int curCount = goods.getCount() + modCount;
         goods.setCount(curCount);
         goodsService.updateById(goods);
