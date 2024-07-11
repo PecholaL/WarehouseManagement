@@ -66,6 +66,7 @@ export default {
     name: "WmsRecordManage",
     data() {
         return {
+            user: JSON.parse(sessionStorage.getItem('CurUser')),
             storageData: [],
             goodsTypeData: [],
             tableData: [],
@@ -86,7 +87,9 @@ export default {
                 param:{
                     name: this.name,
                     goodstype: this.goodstype+'',
-                    storage: this.storage+''
+                    storage: this.storage+'',
+                    roleId: this.user.roleId+'',
+                    userId: this.user.id+''
                 }
             }).then(res=>res.data).then(res=>{
                 console.log(res.code);
