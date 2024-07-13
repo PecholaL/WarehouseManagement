@@ -3,7 +3,7 @@ project for SpringBoot learning
 
 ## Learning
 BACK-END：SpringBoot + MyBatis-Plus  
-FRONT-END：Node.js + VUE + Element-UI
+FRONT-END：VUE + Element-UI
 
 <!--
 ## 学习过程
