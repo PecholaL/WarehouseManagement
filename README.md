@@ -1,5 +1,5 @@
 # WarehouseManagement
-project for SpringBoot learning  
+project for back-end development learning  
 
 ## Learning
 BACK-END：SpringBoot + MyBatis-Plus  
