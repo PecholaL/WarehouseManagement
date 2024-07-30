@@ -30,4 +30,5 @@ test/
 .idea/
 .vscode/
 .DS_Store
+.mvn/
 
